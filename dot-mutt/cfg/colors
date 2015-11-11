@@ -1,0 +1,22 @@
+color attachment yellow default
+color body red default "(ftp|http|file)://[^ ]+"
+color body brightcyan default "[-a-z_0-9.]+@[-a-z_0-9.]+"
+color bold cyan default
+color error brightwhite red
+color hdrdefault default blue
+color header cyan blue "^(From|Subject|Date|Reply-To|To|Cc|Bcc|Sender):"
+color indicator black red
+color markers red yellow
+color message green default
+color normal default default
+color quoted green default
+color quoted1 green default
+color quoted2 green default
+color quoted3 green default
+color search brightred white
+color signature white default
+color status blue white
+color tilde red default
+color tree red default
+color index brightred default "[-A-Z_a-z]+"
+color underline yellow black

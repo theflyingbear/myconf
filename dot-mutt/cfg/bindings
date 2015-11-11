@@ -1,0 +1,2 @@
+# poll imap folder with $ key
+bind browser $ check-new

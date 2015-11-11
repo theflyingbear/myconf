@@ -1,0 +1,51 @@
+# prepare with:
+#   mkdir -p -m 0700 ~/.mutt/{cache,tmp,cache/msg,cfg,mail}
+#   touch ~/.mutt/certs
+#   touch ~/.mutt/cache/headers.db
+# my email addresses:
+alternates "(em@il.1)|(em@il.2)"
+set realname="1st LAST"
+set reverse_name=yes
+set reverse_realname=no
+charset-hook latin1 ISO-8859-1
+charset-hook latin9 ISO-8859-15
+set charset="UTF-8"
+set locale="en_US.UTF-8"
+set send_charset="UTF-8"
+set mail_check=300
+set timeout=15
+set beep_new=no
+set pager_index_lines=25
+set pager_stop
+set sort=threads
+set date_format="%F %R%Z"
+set folder="imaps://user:pass@imapHost"
+set spoolfile="imaps://user:pass@imapHost/INBOX"
+set smtp_url="smtps://user:pass@smtpHost"
+set mbox=".mutt/mail/"
+set record="=Sent"
+set postponed="=Drafts"
+set trash="=Trash"
+set index_format="[%Z][%{%F %R%Z}] %.75s%> [%.25F]"
+set folder_format="[%N][%.10s] %.75f %> [%d]"
+folder-hook SENT 'set index_format="%C,%Z %{%F %R%Z}, %.75s%> ]%.25T]"'
+set tmpdir="~/.mutt/tmp"
+set certificate_file="~/.mutt/certs" 
+set header_cache=".mutt/cache/headers.db"
+set message_cachedir=".mutt/cache/msg"
+# composition
+set forward_quote=yes
+set forward_format="Forwarded message: %s"
+set attribution="On %d, %n wrote:"
+set indent_string="> "
+set editor="vim"
+# displayed headers
+ignore *
+unignore From: To: Cc: Bcc: Date: Subject: Reply-To: 
+# "autoview"
+auto_view text/html
+# external
+source ~/.mutt/cfg/colors
+source ~/.mutt/cfg/mailboxes
+source ~/.mutt/cfg/bindings
+source ~/.mutt/cfg/macros
