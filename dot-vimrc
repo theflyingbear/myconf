@@ -1,0 +1,70 @@
+" global:
+syntax on
+set hls
+set showmatch
+set laststatus=2
+set modeline
+set modelines=1
+" encoding:
+set encoding&
+set termencoding=
+set fileencodings=
+set fileencoding&
+" title & status line:
+set titlestring=%{hostname()}:\ vim\ %m\%F\%r
+set statusline=file:%f\ [eol:%{&ff}/ft=%Y]\ POS(l,c,%%):%l,%v,%p%%
+set title
+" indentation:
+set ai
+set et
+set sw=4
+set sts=4
+set ts=4
+" edit mode:
+set cursorline
+set nowrap
+
+" specific indentation rules:
+" code:
+au BufRead,BufNewFile *.scm set ts=1 sts=1 sw=1
+au BufRead,BufNewFile *.el set ts=1 sts=1 sw=1
+au BufRead,BufNewFile *.htm set ts=1 sts=1 sw=1 et
+au BufRead,BufNewFile *.html set ts=1 sts=1 sw=1 et
+au BufRead,BufNewFile *.html set ts=1 sts=1 sw=1 et
+au BufRead,BufNewFile *.xml set ts=1 sts=1 sw=1 et
+au BufRead,BufNewFile *.pp set ts=2 sts=2 sw=2 et
+au BufRead,BufNewFile *.py set ts=4 sts=4 sw=4 et
+" mail/mutt:
+au BufRead,BufNewFile *.mutt/tmp/mutt* set tw=72 wrap noai ts=1 sts=1 sw=1 et
+
+"""  Transparent editing of gpg encrypted files
+augroup encrypted
+ au!
+ " First make sure nothing is written to ~/.viminfo while editing
+ " an encrypted file.
+ autocmd BufReadPre,FileReadPre      *.gpg set viminfo=
+ " We don't want a swap file, as it writes unencrypted data to disk
+ autocmd BufReadPre,FileReadPre      *.gpg set noswapfile
+ " Switch to binary mode to read the encrypted file
+ autocmd BufReadPre,FileReadPre      *.gpg set bin
+ autocmd BufReadPre,FileReadPre      *.gpg let ch_save = &ch|set ch=2
+ autocmd BufReadPre,FileReadPre      *.gpg let shsave=&sh
+ autocmd BufReadPre,FileReadPre      *.gpg let &sh='sh'
+ autocmd BufReadPre,FileReadPre      *.gpg let ch_save = &ch|set ch=2
+ autocmd BufReadPost,FileReadPost    *.gpg '[,']!gpg --decrypt --default-recipient-self 2> /dev/null
+ autocmd BufReadPost,FileReadPost    *.gpg let &sh=shsave
+ " Switch to normal mode for editing
+ autocmd BufReadPost,FileReadPost    *.gpg set nobin
+ autocmd BufReadPost,FileReadPost    *.gpg let &ch = ch_save|unlet ch_save
+ autocmd BufReadPost,FileReadPost    *.gpg execute ":doautocmd BufReadPost " . expand("%:r")
+ " Convert all text to encrypted text before writing
+ autocmd BufWritePre,FileWritePre    *.gpg set bin
+ autocmd BufWritePre,FileWritePre    *.gpg let shsave=&sh
+ autocmd BufWritePre,FileWritePre    *.gpg let &sh='sh'
+ autocmd BufWritePre,FileWritePre    *.gpg '[,']!gpg --encrypt --default-recipient-self 2>/dev/null
+ autocmd BufWritePre,FileWritePre    *.gpg let &sh=shsave
+ " Undo the encryption so we are back in the normal text, directly
+ " after the file has been written.
+ autocmd BufWritePost,FileWritePost  *.gpg silent u
+ autocmd BufWritePost,FileWritePost  *.gpg set nobin
+augroup END
