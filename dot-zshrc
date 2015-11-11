@@ -1,0 +1,54 @@
+HISTFILE=~/.zsh_history
+HISTSIZE=500
+SAVEHIST=1000
+setopt appendhistory extendedglob notify
+unsetopt beep
+bindkey -e
+zstyle :compinstall filename "${HOME}/.zshrc"
+
+autoload -Uz compinit
+compinit
+
+if [[ -d "$HOME/bin" ]] ;
+then
+	export PATH="$PATH:$HOME/bin"
+fi
+
+PS1="%m:%~%# "
+case "$TERM" in
+rxvt*|urxvt*|xterm*)
+	precmd () { print -Pn "\e]0;%n@%m: %~\a" }
+	PS1="%U%F{blue}%n%u%f@%m: %F{blue}%2~%f %S%F{blue}%#%f%s "
+	;;
+screen)
+	precmd () { echo -n "\ek$(basename $SHELL)::${HOST}:$(basename ${PWD})\e\\" }
+	PS1="%U%n%u@%m: %B%2~%b%S%#%s "
+	;;
+*)
+	PS1="%n@%m: %2~%# "
+	;;
+esac
+export PS1
+
+alias screen="screen -AaOq"
+alias mvim="gvim"
+export LESS="-gIKqRW~"
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ] ;
+then
+	eval "`dircolors -b`"
+	alias ls='ls --color=auto --time-style=long-iso'
+
+	# Less Colors for Man Pages
+	export LESS_TERMCAP_mb=$'\E[01;31m' # begin blinking / bold red
+	export LESS_TERMCAP_md=$'\E[00;34m' # begin bold / blue
+	export LESS_TERMCAP_me=$'\E[0m' # end mode / no style
+	export LESS_TERMCAP_se=$'\E[0m' # end standout-mode / no style
+	export LESS_TERMCAP_so=$'\E[01;44;33m' # begin standout-mode / bold yellow
+	export LESS_TERMCAP_ue=$'\E[0m' # end underline / no style
+	export LESS_TERMCAP_us=$'\E[00;36m' # begin underline / cyan
+
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+fi
