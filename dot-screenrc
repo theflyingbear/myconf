@@ -1,0 +1,9 @@
+fit
+defutf8 on
+startup_message off
+hardstatus alwayslastline '(%{b}%Y-%m-%d %c%{d}) %{r}%u%{d} [%-w %{g}%n %t%{d} %+w] '
+vbell off
+autodetach on
+nonblock on
+defscrollback 35000
+termcapinfo xterm*|rxvt* ti@:te@
